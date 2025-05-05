@@ -27,6 +27,7 @@ const exp3 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/(?:info|git-).*$/i // 匹�
 const exp4 = /^(?:https?:\/\/)?raw\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+?\/.+$/i // 匹配raw.githubusercontent.com的路径
 const exp5 = /^(?:https?:\/\/)?gist\.(?:githubusercontent|github)\.com\/.+?\/.+?\/.+$/i // 匹配Gist的路径
 const exp6 = /^(?:https?:\/\/)?github\.com\/.+?\/.+?\/tags.*$/i // 匹配GitHub的tags路径
+const exp7 = /^(?:https?:\/\/)?api\.github\.com\/.*$/i // 匹配api.github.com的路径
 
 /**
  * 创建响应对象
@@ -56,7 +57,7 @@ function newUrl(urlStr) {
  * @param {string} u - 待检查的URL
  */
 function checkUrl(u) {
-	for (let i of [exp1, exp2, exp3, exp4, exp5, exp6]) {
+	for (let i of [exp1, exp2, exp3, exp4, exp5, exp6, exp7]) {
 		if (u.search(i) === 0) {
 			return true // 如果匹配，返回true
 		}
@@ -191,7 +192,7 @@ export default {
 		}
 		// cfworker 会把路径中的 `//` 合并成 `/`
 		path = urlObj.href.substr(urlObj.origin.length + PREFIX.length).replace(/^https?:\/+/, 'https://')
-		if (path.search(exp1) === 0 || path.search(exp5) === 0 || path.search(exp6) === 0 || path.search(exp3) === 0 || path.search(exp4) === 0) {
+		if (path.search(exp1) === 0 || path.search(exp5) === 0 || path.search(exp6) === 0 || path.search(exp3) === 0 || path.search(exp4) === 0 || path.search(exp7) === 0) {
 			return httpHandler(request, path) // 处理符合正则的请求
 		} else if (path.search(exp2) === 0) {
 			if (Config.jsdelivr) {
